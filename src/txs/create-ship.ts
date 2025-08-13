@@ -13,7 +13,7 @@ export async function run() {
   const DEFAULT_TRP_API_KEY = "trp1lrnhzcax5064cgxsaup";
 
   const client = new Client({
-    endpoint: process.env.TRP_ENDPOINT || DEFAULT_TRP_ENDPOINT,
+    endpoint: "https://cardano-preview.trp-m1.demeter.run",
     headers: {
       "dmtr-api-key": process.env.TRP_API_KEY || DEFAULT_TRP_API_KEY,
     },

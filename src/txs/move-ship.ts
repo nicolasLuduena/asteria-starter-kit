@@ -4,7 +4,6 @@ import { Client, MoveShipParams } from "../bindings/protocol";
 import signTx, { setupBlaze } from "../utils/sign-tx";
 
 export async function run() {
-
   dotenv.config();
 
   if (!process.env.PLAYER_PRIVATE_KEY) {
@@ -17,11 +16,10 @@ export async function run() {
 
   const DEFAULT_TRP_ENDPOINT = "https://cardano-mainnet.trp-m1.demeter.run";
   const DEFAULT_TRP_API_KEY = "trp1lrnhzcax5064cgxsaup";
-
   const client = new Client({
-    endpoint: process.env.TRP_ENDPOINT || DEFAULT_TRP_ENDPOINT,
+    endpoint: "https://cardano-preview.trp-m1.demeter.run",
     headers: {
-      "dmtr-api-key": process.env.TRP_API_KEY || DEFAULT_TRP_API_KEY,
+      "dmtr-api-key": "trp1x3mstdsucqrsshrspk4",
     },
   });
 
