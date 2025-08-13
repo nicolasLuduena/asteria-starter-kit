@@ -20,10 +20,10 @@ export async function run() {
   });
 
   const playerAddress = blaze.wallet.address.toBech32();
-  const positionX = 50; // Replace with your desired start X position
-  const positionY = 50; // Replace with your desired start Y position
-  const shipName = "SHIP5"; // Replace 0 with the next ship number
-  const pilotName = "PILOT5"; // Replace 0 with the next ship number
+  const positionX = 48; // Replace with your desired start X position
+  const positionY = 15; // Replace with your desired start Y position
+  const shipName = "SHIP6"; // Replace 0 with the next ship number
+  const pilotName = "PILOT6"; // Replace 0 with the next ship number
   const tipSlot = Math.ceil(blaze.provider.unixToSlot(Date.now()));
   const lastMoveTimestamp = Date.now();
 

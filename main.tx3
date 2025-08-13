@@ -58,6 +58,22 @@ type ShipActions {
     },
 }
 
+type AsteriaRedeemer {
+  AddNewShip,
+  Mine,
+  ConsumeAsteria,
+}
+
+
+type ShipyardRedeemer {
+  MintShip,
+  BurnShip,
+}
+type FuelRedeemer {
+  MintFuel,
+  BurnFuel,
+}
+
 tx create_ship(
     p_pos_x: Int, // Ship Position X
     p_pos_y: Int, // Ship Position Y
@@ -67,7 +83,7 @@ tx create_ship(
     last_move_timestamp: Int,
 ) {
     locals {
-        initial_fuel: 5, // Should be taken from spaceTime datum
+        initial_fuel: 4, // Should be taken from spaceTime datum
         ship_mint_lovelace_fee: 1000000, // Should be taken from asteria script datum
         spacetime_policy_hash: 0xb6c5e14f31af0c92515ce156625afc4749e30ceef178cfae1f929fff,
         spacetime_policy_ref: 0x81667fe89e20c352a8428f68efd0c9db1fef6cd15aa36ad4423797bb2c401431#1,
@@ -100,17 +116,17 @@ tx create_ship(
         from: AsteriaPolicy,
         min_amount: AdminToken(1),
         datum_is: AsteriaDatum,
-        redeemer: (),
+        redeemer: AsteriaRedeemer::AddNewShip {},
     }
     
     mint {
         amount: AnyAsset(spacetime_policy_hash, pilot_name, 1) + AnyAsset(spacetime_policy_hash, ship_name, 1),
-        redeemer: (),
+        redeemer: ShipyardRedeemer::MintShip {},
     }
 
     mint {
         amount: Fuel(initial_fuel),
-        redeemer: (),
+        redeemer: FuelRedeemer::MintFuel {},
     }
 
     output {
