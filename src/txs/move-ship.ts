@@ -6,16 +6,6 @@ import signTx, { setupBlaze } from "../utils/sign-tx";
 export async function run() {
   dotenv.config();
 
-  if (!process.env.PLAYER_PRIVATE_KEY) {
-    throw new Error("PLAYER_PRIVATE_KEY environment variable is not set");
-  }
-
-  if (!process.env.PLAYER_ADDRESS) {
-    throw new Error("PLAYER_ADDRESS environment variable is not set");
-  }
-
-  const DEFAULT_TRP_ENDPOINT = "https://cardano-mainnet.trp-m1.demeter.run";
-  const DEFAULT_TRP_API_KEY = "trp1lrnhzcax5064cgxsaup";
   const client = new Client({
     endpoint: "https://cardano-preview.trp-m1.demeter.run",
     headers: {
@@ -29,10 +19,10 @@ export async function run() {
   const deltaX = 1; // Replace with your desired X movement units
   const deltaY = 1; // Replace with your desired Y movement units
   const requiredFuel = 2; // Replace with the required fuel for the movement
-  const shipName = "SHIP9"; // Replace with your ship name
-  const pilotName = "PILOT9"; // Replace with your pilot name
+  const shipName = "SHIP11"; // Replace with your ship name
+  const pilotName = "PILOT11"; // Replace with your pilot name
   const tipSlot = Math.floor(blaze.provider.unixToSlot(Date.now()));
-  const lastMoveTimestamp = Date.now() + 300_000_000;
+  const lastMoveTimestamp = Date.now() + 300_000;
 
   console.log("-- PARAMS");
   console.log({
