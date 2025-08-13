@@ -203,9 +203,9 @@ tx move_ship(
         min_amount: AnyAsset(spacetime_policy_hash, pilot_name, 1) + fees,
     }
 
-    burn {
-        amount: Fuel(required_fuel),
-        redeemer: (),
+    mint {
+        amount: Fuel(required_fuel) - Fuel(required_fuel) - Fuel(required_fuel),
+        redeemer: FuelRedeemer::BurnFuel {},
     }
 
     output {

@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import { ArgValue, SubmitParams, BytesEnvelope } from "tx3-sdk/trp";
 import { Client, MoveShipParams } from "../bindings/protocol";
-import signTx from "../utils/sign-tx";
+import signTx, { setupBlaze } from "../utils/sign-tx";
 
 export async function run() {
 
@@ -25,14 +25,16 @@ export async function run() {
     },
   });
 
-  const playerAddress = process.env.PLAYER_ADDRESS;
+  const blaze = await setupBlaze();
+
+  const playerAddress = blaze.wallet.address.toBech32();
   const deltaX = 1; // Replace with your desired X movement units
   const deltaY = 1; // Replace with your desired Y movement units
   const requiredFuel = 2; // Replace with the required fuel for the movement
-  const shipName = "SHIP22"; // Replace with your ship name
-  const pilotName = "PILOT22"; // Replace with your pilot name
-  const tipSlot = 163530194; // Replace with the latest block slot
-  const lastMoveTimestamp = Date.now();
+  const shipName = "SHIP9"; // Replace with your ship name
+  const pilotName = "PILOT9"; // Replace with your pilot name
+  const tipSlot = Math.floor(blaze.provider.unixToSlot(Date.now()));
+  const lastMoveTimestamp = Date.now() + 300_000_000;
 
   console.log("-- PARAMS");
   console.log({
@@ -53,7 +55,7 @@ export async function run() {
     requiredFuel: requiredFuel,
     pilotName: new TextEncoder().encode(pilotName),
     shipName: new TextEncoder().encode(shipName),
-    tipSlot: tipSlot + 300, // 5 minutes from last block
+    tipSlot: tipSlot, // 4 minutes from last block
     lastMoveTimestamp,
   };
 
@@ -62,29 +64,26 @@ export async function run() {
   console.log("-- RESOLVE");
   console.log(response);
 
-  const witnesses = signTx(response.hash, process.env.PLAYER_PRIVATE_KEY);
+  await signTx(response.tx);
 
-  console.log("-- SIGN TX");
-  console.log(witnesses);
+  //const submitParams: SubmitParams = {
+  //  tx: {
+  //    content: response.tx,
+  //    encoding: "hex",
+  //  } as BytesEnvelope,
+  //  witnesses,
+  //};
 
-  const submitParams: SubmitParams = {
-    tx: {
-      content: response.tx,
-      encoding: 'hex'
-    } as BytesEnvelope,
-    witnesses
-  };
-  
-  console.log("-- SUBMIT");
-  console.log(submitParams);
-  
-  try {
-    await client.submit(submitParams);
-    console.log("-- DONE");
-  } catch (error) {
-    console.error("-- SUBMIT ERROR");
-    console.error("Failed to submit transaction:", error);
-  }
+  //console.log("-- SUBMIT");
+  //console.log(submitParams);
+
+  //try {
+  //  await client.submit(submitParams);
+  //  console.log("-- DONE");
+  //} catch (error) {
+  //  console.error("-- SUBMIT ERROR");
+  //  console.error("Failed to submit transaction:", error);
+  //}
 }
 
 run().catch((error) => {
