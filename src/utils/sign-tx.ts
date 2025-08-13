@@ -1,19 +1,37 @@
-import { SubmitWitness } from "tx3-sdk/trp";
-import { ed25519 } from "@noble/curves/ed25519";
+import {
+  Bip32PrivateKey,
+  mnemonicToEntropy,
+  NetworkId,
+  Transaction,
+  TxCBOR,
+  wordlist,
+} from "@blaze-cardano/core";
+import { Blaze, Blockfrost, HotWallet } from "@blaze-cardano/sdk";
 
-export default function signTx(txHash: string, privateKey: string): SubmitWitness[] {
-  const signature = ed25519.sign(txHash, privateKey);
-  const publicKey = ed25519.getPublicKey(privateKey);
-  
-  return [{
-    type: 'vkey',
-    key: {
-      content: Buffer.from(publicKey).toString('hex'),
-      encoding: 'hex'
-    },
-    signature: {
-      content: Buffer.from(signature).toString('hex'),
-      encoding: 'hex'
-    }
-  }];
+export async function setupBlaze() {
+  const seed = "";
+  const entropy = mnemonicToEntropy(seed, wordlist);
+  const masterkey = Bip32PrivateKey.fromBip39Entropy(Buffer.from(entropy), "");
+  // const provider = new U5C({
+  //   url: "http://localhost:50051",
+  //   network: NetworkId.Testnet,
+  // });
+  const provider = new Blockfrost({
+    projectId: "",
+    network: "cardano-preview",
+  });
+  const wallet = await HotWallet.fromMasterkey(
+    masterkey.hex(),
+    provider,
+    NetworkId.Testnet
+  );
+  const blaze = await Blaze.from(provider, wallet);
+  return blaze;
+}
+
+export default async function signTx(cbor: string) {
+  const blaze = await setupBlaze();
+  const tx = await blaze.signTransaction(Transaction.fromCbor(TxCBOR(cbor)));
+  console.log("Signed transaction:", tx.toCbor());
+  await blaze.submitTransaction(tx);
 }
