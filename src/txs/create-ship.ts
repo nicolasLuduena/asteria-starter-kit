@@ -25,7 +25,7 @@ export async function run() {
   const shipName = "SHIP6"; // Replace 0 with the next ship number
   const pilotName = "PILOT6"; // Replace 0 with the next ship number
   const tipSlot = Math.ceil(blaze.provider.unixToSlot(Date.now()));
-  const lastMoveTimestamp = Date.now();
+  const lastMoveTimestamp = Date.now() + 300_000;
 
   console.log("-- PARAMS");
   console.log({
@@ -43,7 +43,7 @@ export async function run() {
     pPosY: positionY,
     pilotName: new TextEncoder().encode(pilotName),
     shipName: new TextEncoder().encode(shipName),
-    tipSlot: tipSlot + 300, // 5 minutes from last block
+    tipSlot: tipSlot, //+ 300, // 5 minutes from last block
     lastMoveTimestamp,
   };
 

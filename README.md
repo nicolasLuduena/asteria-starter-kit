@@ -1,5 +1,10 @@
 # Asteria Starter Kit
 
+## Reference Docs
+
+- [Asteria on-chain design document](https://github.com/txpipe/asteria/blob/main/onchain/docs/design/design.md)
+- [Asteria on-chain validators](https://github.com/txpipe/asteria/tree/main/onchain/src)
+
 ## Install the toolchain
 
 Visit the [Tx3 installation](https://docs.txpipe.io/tx3/installation) guide.
@@ -64,7 +69,7 @@ You can query the next available ship and pilot token names using the following 
 ```
 curl --location 'https://8000-ethereal-audience-bb83g6.us1.demeter.run/graphql' \
 --header 'Content-Type: application/json' \
---data '{"query":"query { lastShipToken(spacetimePolicyId: \"0291ae7aebaf064b785542093c2b13169effb34462301e68d4b44f43\", spacetimeAddress: \"addr1wypfrtn6awhsvjmc24pqj0ptzvtfalang33rq8ng6j6y7scnlkytx\") { shipName pilotName } }","variables":{}}'
+--data '{"query":"query { nextShipTokenName(spacetimePolicyId: \"0291ae7aebaf064b785542093c2b13169effb34462301e68d4b44f43\", spacetimeAddress: \"addr1wypfrtn6awhsvjmc24pqj0ptzvtfalang33rq8ng6j6y7scnlkytx\") { shipName pilotName } }","variables":{}}'
 ```
 
 You can query the tip of the chain using the following curl:

@@ -9,7 +9,7 @@ import {
 import { Blaze, Blockfrost, HotWallet } from "@blaze-cardano/sdk";
 
 export async function setupBlaze() {
-  const seed = "";
+  const seed =
   const entropy = mnemonicToEntropy(seed, wordlist);
   const masterkey = Bip32PrivateKey.fromBip39Entropy(Buffer.from(entropy), "");
   // const provider = new U5C({
@@ -33,5 +33,6 @@ export default async function signTx(cbor: string) {
   const blaze = await setupBlaze();
   const tx = await blaze.signTransaction(Transaction.fromCbor(TxCBOR(cbor)));
   console.log("Signed transaction:", tx.toCbor());
-  await blaze.submitTransaction(tx);
+  const txHash = await blaze.submitTransaction(tx);
+  console.log("Transaction submitted with hash:", txHash);
 }
